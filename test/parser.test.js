@@ -3,8 +3,8 @@ const {describe, it} = require('mocha')
 const {FUELS, MEANS, BRANDS} = require('../')
 const {WogParser} = require('../wog/parser')
 
-describe('Parser', function() {
-  it('Wog parse()', function() {
+describe('Wog Parser', function() {
+  it('parse()', function() {
     const stationData = {
       link: 'https://api.wog.ua/fuel_stations/807',
       city: 'Могилів-Подільський',
@@ -41,6 +41,7 @@ describe('Parser', function() {
     const parser = new WogParser()
     const actual = parser.parse(stationData)
     const expected = {
+      externalId: 807,
       brand: BRANDS.wog,
       coordinates: {longitude: 27.796942, latitude: 48.451743},
       address: 'Вінницька обл., м.Могилів-Подільський, вул.Пушкіна, 74',
