@@ -1,5 +1,5 @@
-const FUEL_CODES = {
-  dz: 'dz',
+const FUELS = {
+  ds: 'ds',
   dsp: 'dsp',
   a92: 'a92',
   a95: 'a95',
@@ -15,8 +15,13 @@ const MEANS = {
   special_transport: 'special_transport' 
 }
 
+const BRANDS = {
+  wog: 'wog'
+}
+
 module.exports = {
-  FUEL_CODES,
-  MEANS
+  FUELS,
+  MEANS,
+  BRANDS
 }
 

@@ -1,6 +1,6 @@
 const {strict: assert} = require('assert')
 const {describe, it} = require('mocha')
-const {FUEL_CODES, MEANS} = require('../')
+const {FUELS, MEANS, BRANDS} = require('../')
 const {WogParser} = require('../wog/parser')
 
 describe('Parser', function() {
@@ -41,11 +41,11 @@ describe('Parser', function() {
     const parser = new WogParser()
     const actual = parser.parse(stationData)
     const expected = {
-      brand: 'wog',
+      brand: BRANDS.wog,
       coordinates: {longitude: 27.796942, latitude: 48.451743},
       address: 'Вінницька обл., м.Могилів-Подільський, вул.Пушкіна, 74',
       fuels: {
-        [FUEL_CODES.ds]: {
+        [FUELS.ds]: {
           inStock: true,
           desc: 'ДП - Готівка, банк.картки 20л. Гаманець ПРАЙД до 100л. Талони до 40л. Паливна картка (ліміт картки).',
           means: {
@@ -55,19 +55,19 @@ describe('Parser', function() {
             [MEANS.fuel_card]: 'ліміт картки',
           }
         },
-        [FUEL_CODES.a92]: {
+        [FUELS.a92]: {
           inStock: false,
           desc: 'А92 - Пальне відсутнє.',
           means: null
         },
-        [FUEL_CODES.a95]: {
+        [FUELS.a95]: {
           inStock: true,
           desc: 'А95 - тільки спецтранспорт.',
           means: {
             [MEANS.special_transport]: 'unknown'
           }
         },
-        [FUEL_CODES.a95p]: {
+        [FUELS.a95p]: {
           inStock: false,
           desc: 'М95 - Пальне відсутнє.',
           means: null

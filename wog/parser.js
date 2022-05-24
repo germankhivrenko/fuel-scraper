@@ -1,46 +1,72 @@
 const _ = require('lodash')
-const {FUEL_CODES, PURCHASE_MEANS} = require('../')
+const {FUELS, MEANS, BRANDS} = require('../')
 
 class WogParser {
   parse(data) {
-    const prefix = 'ДП -'
-    const line = _.chain(data).split('\n').find((line) => _.includes(line, prefix)).value()
+    const patterns = {
+      [FUELS.ds]: 'ДП -',
+      [FUELS.a92]: 'А92 -',
+      [FUELS.a95]: 'А95 -',
+      [FUELS.a95p]: 'М95 -'
+    }
+    const fuels = _.chain(patterns)
+      .mapValues((pattern, fuel) => {
+        const fuelData = _.chain(data)
+          .get('workDescription', '')
+          .split('\n')
+          .find((line) => _.includes(line, pattern))
+          .value()
 
-    // map fuel codes
+        return this._parseFuel(fuelData)
+      })
+      .pickBy()
+      .value()
 
-    return [
-    ]
+    return {
+      brand: BRANDS.wog,
+      coordinates: _.get(data, 'coordinates', null),
+      address: _.get(data, 'name', null),
+      fuels
+    }
   }
 
-  parseFuel(data) {
-    // common for all fuels
-    const inStock = _.includes(data, 'Пальне відсутнє')
+  _parseFuel(fuelData) {
+    const inStock = !_.includes(fuelData, 'Пальне відсутнє')
 
     if (!inStock) {
       return {
         inStock: false,
-        desc: data,
-        purchaseMeans: null
+        desc: fuelData,
+        means: null
       }
     }
 
-    const meanPatterns = {
-      [PURCHASE_MEANS.cash]: 'Готівка, банк.картки',
-      [PURCHASE_MEANS.brand_wallet]: 'Гаманець ПРАЙД',
-      [PURCHASE_MEANS.cash]: 'Талони',
-      [PURCHASE_MEANS.cash]: 'Паливна картка',
+    const patterns = {
+      [MEANS.cash]: 'Готівка, банк.картки',
+      [MEANS.brand_wallet]: 'Гаманець ПРАЙД',
+      [MEANS.coupon]: 'Талони',
+      [MEANS.fuel_card]: 'Паливна картка',
+      [MEANS.special_transport]: 'тільки спецтранспорт'
     }
-    const meansArr = _.split(data, '.')
-    const purchaseMeans = _.mapValues(meanPatterns, (pattern) => {
-      const meanStr = _.find(meansArr, (str) => _.includes(str, pattern))
-      if (!meanStr) {
-        return null
-      }
+    const meanDataArr = _.split(fuelData, '. ')
+    const means = _.chain(patterns)
+      .mapValues((pattern, mean) => {
+        const meanData = _.find(meanDataArr, (meanData) => _.includes(meanData, pattern))
+        if (!meanData) {
+          return null
+        }
 
-      const limit = this._parseLimit(meanStr)
-      return limit || 'unknown'
-    })
+        const limit = this._parseLimit(meanData)
+        return limit || 'unknown'
+      })
+      .pickBy()
+      .value()
 
+    return {
+      inStock: true,
+      desc: fuelData,
+      means
+    }
   }
 
   _parseLimit(data) {
