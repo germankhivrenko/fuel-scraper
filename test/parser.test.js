@@ -1,6 +1,6 @@
 const {strict: assert} = require('assert')
 const {describe, it} = require('mocha')
-const {FUELS, MEANS, BRANDS} = require('../')
+const {FUELS, MEANS, BRANDS} = require('../const')
 const {WogParser} = require('../wog/parser')
 
 describe('WogParser', function() {

@@ -5,7 +5,9 @@ class WogService {
 
   async fetchStationList() {
     const {body} = await this._request('https://api.wog.ua/fuel_stations')
-    return body.json()
+    const {data} = await body.json()
+
+    return data
   }
 
   async fetchStation(id) {
@@ -13,6 +15,7 @@ class WogService {
     const {body} = await this._request(`https://api.wog.ua/fuel_stations/${id}`)
     const {data} = await body.json()
     console.dir(data, {depth: 3})
+
     return data
   }
 }

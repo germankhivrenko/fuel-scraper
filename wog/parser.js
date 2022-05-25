@@ -1,5 +1,5 @@
 const _ = require('lodash')
-const {FUELS, MEANS, BRANDS} = require('../')
+const {FUELS, MEANS, BRANDS} = require('../const')
 
 class WogParser {
   parse(data) {
