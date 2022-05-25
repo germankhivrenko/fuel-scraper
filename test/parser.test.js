@@ -3,7 +3,7 @@ const {describe, it} = require('mocha')
 const {FUELS, MEANS, BRANDS} = require('../')
 const {WogParser} = require('../wog/parser')
 
-describe('Wog Parser', function() {
+describe('WogParser', function() {
   it('parse()', function() {
     const stationData = {
       link: 'https://api.wog.ua/fuel_stations/807',

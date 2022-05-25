@@ -1,24 +1,38 @@
 const _ = require('lodash')
-const {request} = require('undici')
 
-const collectData = async () => {
-  console.log('Starting fetching data...\n')
-
-  const {body} = await request('https://api.wog.ua/fuel_stations')
-  const {data} = await body.json()
-  const stations = _.chain(data).get('stations', []).take(5).value()
-  
-  for (const station of stations) {
-    const id = _.chain(stations).first().get('id').value()
-    await fetchStationInfo(id)
+class WogScraper {
+  constructor(wogService, parser) {
+    this._wogService = wogService
+    this._parser = parser
   }
-} 
 
-const fetchStationInfo = async (id) => {
-  const {body} = await request(`https://api.wog.ua/fuel_stations/${id}`)
-  const {data} = await body.json()
-  console.dir(data, {depth: 3})
+  async scrapeStations() {
+    const data = await this._wogService.fetchStationList()
+    const stationIds = _.chain(data).get('stations', []).map('id').compact().value()
+    
+    return {
+      [Symbol.asyncIterator]: () => {
+        return {
+          next: async () => {
+            if (_.isEmpty(stationIds)) {
+              return {done: true}
+            }
+
+            const id = stationIds.shift()
+            const data = await this._wogService.fetchStation(id)
+
+            return {
+              done: false,
+              value: this._parser.parse(data)
+            }
+          }
+        }
+      }
+    }
+  }
 }
 
-collectData()
-// const timeout = setInterval(collectData, 10 * 1000)
+module.exports = {
+  WogScraper
+}
+

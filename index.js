@@ -1,3 +1,5 @@
+const {createScraper} = require('./wog')
+
 const FUELS = {
   ds: 'ds',
   dsp: 'dsp',
@@ -24,4 +26,15 @@ module.exports = {
   MEANS,
   BRANDS
 }
+
+const scraper = createScraper()
+
+;(async () => {
+  const stations = await scraper.scrapeStations()
+
+  for await (const station of stations) {
+    console.dir(station)
+  }
+})()
+
 
