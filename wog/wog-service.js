@@ -14,7 +14,7 @@ class WogService {
     const {body} = await this._request(`https://api.wog.ua/fuel_stations/${id}`)
     const {data} = await body.json()
 
-    return data
+    return {...data, fetchedAt: new Date()}
   }
 }
 

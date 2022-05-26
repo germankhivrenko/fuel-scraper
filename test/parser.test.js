@@ -1,4 +1,5 @@
 const {strict: assert} = require('assert')
+const _ = require('lodash')
 const {describe, it} = require('mocha')
 const {FUELS, MEANS, BRANDS} = require('../const')
 const {WogParser} = require('../wog/parser')
@@ -35,7 +36,8 @@ describe('WogParser', function() {
       ],
       schedule: [{day: 'Сьогодні', interval: '05:00 - 23:00'}],
       name: 'Вінницька обл., м.Могилів-Подільський, вул.Пушкіна, 74',
-      id: 807
+      id: 807,
+      fetchedAt: new Date('2022-05-26T21:12:00')
     } 
 
     const parser = new WogParser()
@@ -76,7 +78,8 @@ describe('WogParser', function() {
       }
     }
 
-    assert.deepEqual(actual, expected)
+    assert.deepEqual(_.omit(actual, 'fetchedAt'), expected)
+    assert.equal(actual.fetchedAt - new Date('2022-05-26T21:12:00'), 0)
   })
 })
 

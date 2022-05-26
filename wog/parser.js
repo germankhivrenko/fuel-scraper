@@ -27,7 +27,8 @@ class WogParser {
       brand: BRANDS.wog,
       coordinates: _.get(data, 'coordinates', null),
       address: _.get(data, 'name', null),
-      fuels
+      fuels,
+      fetchedAt: _.get(data, 'fetchedAt', null)
     }
   }
 

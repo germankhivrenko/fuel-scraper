@@ -13,7 +13,7 @@ const {createScraper} = require('./wog')
     await client.connect()
     console.log('Successfully connected')
     const db = client.db(process.env.MONGO_DB)
-    const coll = db.collection('station')
+    const coll = db.collection('stations')
     
     // setup scraper job
     const job = Job.create(async () => {
@@ -25,7 +25,8 @@ const {createScraper} = require('./wog')
         const update = {$set: station}
         const options = {upsert: true}
 
-        await coll.updateOne(filter, update, options)
+        const res = await coll.updateOne(filter, update, options)
+        console.dir(res)
       }
     }, 5 * 60 * 1000)
     
