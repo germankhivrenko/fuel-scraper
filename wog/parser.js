@@ -25,7 +25,7 @@ class WogParser {
     return {
       externalId: _.get(data, 'id', null),
       brand: BRANDS.wog,
-      coordinates: _.get(data, 'coordinates', null),
+      location: _.get(data, 'coordinates', null),
       address: _.get(data, 'name', null),
       fuels,
       fetchedAt: _.get(data, 'fetchedAt', null)

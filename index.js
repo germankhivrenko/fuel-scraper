@@ -9,7 +9,6 @@ const {createScraper} = require('./wog')
     const mongoURL = `mongodb://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}`
       + `@${process.env.MONGO_HOST}:${process.env.MONGO_PORT}`
     const client = new MongoClient(mongoURL)
-    console.log('hello')
     await client.connect()
     console.log('Successfully connected')
     const db = client.db(process.env.MONGO_DB)
@@ -25,8 +24,8 @@ const {createScraper} = require('./wog')
         const update = {$set: station}
         const options = {upsert: true}
 
+        console.dir(station)
         const res = await coll.updateOne(filter, update, options)
-        console.dir(res)
       }
     }, 5 * 60 * 1000)
     
