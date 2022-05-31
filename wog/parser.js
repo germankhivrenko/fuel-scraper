@@ -21,11 +21,15 @@ class WogParser {
       })
       .pickBy()
       .value()
+    const {longitude, latitude} = _.get(data, 'coordinates', {})
 
     return {
       externalId: _.get(data, 'id', null),
       brand: BRANDS.wog,
-      location: _.get(data, 'coordinates', null),
+      location: {
+        type: 'Point',
+        coordinates: [longitude, latitude]
+      },
       address: _.get(data, 'name', null),
       fuels,
       fetchedAt: _.get(data, 'fetchedAt', null)

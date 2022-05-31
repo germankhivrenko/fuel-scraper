@@ -45,7 +45,10 @@ describe('WogParser', function() {
     const expected = {
       externalId: 807,
       brand: BRANDS.wog,
-      location: {longitude: 27.796942, latitude: 48.451743},
+      location: {
+        type: 'Point',
+        coordinates: [27.796942, 48.451743]
+      },
       address: 'Вінницька обл., м.Могилів-Подільський, вул.Пушкіна, 74',
       fuels: {
         [FUELS.ds]: {
