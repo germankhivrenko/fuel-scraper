@@ -9,7 +9,10 @@ class Job {
 
       try {
         this._executing = true
+        console.time('jobIteration')
         await Promise.resolve(callback())
+        console.log('Time spent on job iteration')
+        console.timeEnd('jobIteration')
         this._executing = false
       } catch(err) {
         console.error(err)

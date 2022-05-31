@@ -19,25 +19,36 @@ const {createScraper} = require('./wog')
       const wogScraper = createScraper()
       const stationsData = await wogScraper.scrapeStations()
 
+      // TODO: add try catch on http request
       for await (const station of stationsData) {
         const filter = {brand: station.brand, externalId: station.externalId}
         const update = {$set: station}
         const options = {upsert: true}
 
-        console.dir(station)
+        console.log('Upserting station')
+        console.dir(filter)
         const res = await coll.updateOne(filter, update, options)
       }
     }, 5 * 60 * 1000)
     
     // run one scraper iteration
     job.start()
-    console.log('Start stopping')
-    await job.stop()
-    console.log('Successfully stopped')
 
-    // close mongo connection
-    await client.close()
-    console.log('Successfully closed')
+    // shut down gracefully
+    process.once('SIGINT', async () => {
+      console.log('Start stopping')
+      await job.stop()
+      console.log('Job has been stopped properly')
+      await client.close()
+      console.log('Successfully closed')
+    })
+    process.once('SIGTERM', async () => {
+      console.log('Start stopping')
+      await job.stop()
+      console.log('Job has been stopped properly')
+      await client.close()
+      console.log('Successfully closed')
+    })
   } catch(err) {
     console.error(err)
     throw err
