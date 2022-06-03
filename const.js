@@ -16,7 +16,8 @@ const MEANS = {
 }
 
 const BRANDS = {
-  wog: 'wog'
+  wog: 'wog',
+  okko: 'okko'
 }
 
 module.exports = {

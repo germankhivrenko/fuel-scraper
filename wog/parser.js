@@ -63,7 +63,7 @@ class WogParser {
         }
 
         const limit = this._parseLimit(meanData)
-        return limit || 'unknown'
+        return limit
       })
       .pickBy()
       .value()
@@ -77,7 +77,7 @@ class WogParser {
 
   _parseLimit(data) {
     const regex = /\d+л|ліміт картки/
-    return _.first(data.match(regex))
+    return _.first(data.match(regex)) || 'unknown'
   }
 }
 
