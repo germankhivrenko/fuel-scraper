@@ -52,10 +52,14 @@ describe('Parser', function() {
           coordinates: [27.796942, 48.451743]
         },
         address: 'Вінницька обл., м.Могилів-Подільський, вул.Пушкіна, 74',
+        desc: 'АЗК працює згідно графіку.\n' +
+          'М95 - Пальне відсутнє.\n' +
+          'А95 - тільки спецтранспорт.\n' +
+          'А92 - Пальне відсутнє.\n' +
+          'ДП - Готівка, банк.картки 20л. Гаманець ПРАЙД до 100л. Талони до 40л. Паливна картка (ліміт картки).\n',
         fuels: {
           [FUELS.ds]: {
             inStock: true,
-            desc: 'ДП - Готівка, банк.картки 20л. Гаманець ПРАЙД до 100л. Талони до 40л. Паливна картка (ліміт картки).',
             means: {
               [MEANS.cash]: '20л',
               [MEANS.brand_wallet]: '100л',
@@ -65,19 +69,16 @@ describe('Parser', function() {
           },
           [FUELS.a92]: {
             inStock: false,
-            desc: 'А92 - Пальне відсутнє.',
             means: null
           },
           [FUELS.a95]: {
             inStock: true,
-            desc: 'А95 - тільки спецтранспорт.',
             means: {
               [MEANS.special_transport]: 'unknown'
             }
           },
           [FUELS.a95p]: {
             inStock: false,
-            desc: 'М95 - Пальне відсутнє.',
             means: null
           },
         }

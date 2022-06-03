@@ -2,17 +2,18 @@ const _ = require('lodash')
 const {FUELS, MEANS, BRANDS} = require('../const')
 
 class WogParser {
+  // TODO: add gas
+  static FUEL_PATTERNS = {
+    [FUELS.ds]: 'ДП -',
+    [FUELS.a92]: 'А92 -',
+    [FUELS.a95]: 'А95 -',
+    [FUELS.a95p]: 'М95 -'
+  }
+
   parse(data) {
-    const patterns = {
-      [FUELS.ds]: 'ДП -',
-      [FUELS.a92]: 'А92 -',
-      [FUELS.a95]: 'А95 -',
-      [FUELS.a95p]: 'М95 -'
-    }
-    const fuels = _.chain(patterns)
+    const fuels = _.chain(WogParser.FUEL_PATTERNS)
       .mapValues((pattern, fuel) => {
-        const fuelData = _.chain(data)
-          .get('workDescription', '')
+        const fuelData = _.chain(data.workDescription)
           .split('\n')
           .find((line) => _.includes(line, pattern))
           .value()
@@ -21,18 +22,19 @@ class WogParser {
       })
       .pickBy()
       .value()
-    const {longitude, latitude} = _.get(data, 'coordinates', {})
+    const {coordinates: {longitude, latitude}} = data
 
     return {
-      externalId: _.get(data, 'id', null),
+      externalId: data.id,
       brand: BRANDS.wog,
       location: {
         type: 'Point',
         coordinates: [longitude, latitude]
       },
-      address: _.get(data, 'name', null),
+      address: data.name,
       fuels,
-      fetchedAt: _.get(data, 'fetchedAt', null)
+      fetchedAt: data.fetchedAt,
+      desc: data.workDescription
     }
   }
 
@@ -42,7 +44,6 @@ class WogParser {
     if (!inStock) {
       return {
         inStock: false,
-        desc: fuelData,
         means: null
       }
     }
@@ -70,7 +71,6 @@ class WogParser {
 
     return {
       inStock: true,
-      desc: fuelData,
       means
     }
   }
