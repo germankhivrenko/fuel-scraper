@@ -2,12 +2,13 @@ const _ = require('lodash')
 const {FUELS, MEANS, BRANDS} = require('../const')
 
 class WogParser {
-  // TODO: add gas
   static FUEL_PATTERNS = {
     [FUELS.ds]: 'ДП -',
+    [FUELS.dsp]: 'МДП+ -',
     [FUELS.a92]: 'А92 -',
     [FUELS.a95]: 'А95 -',
-    [FUELS.a95p]: 'М95 -'
+    [FUELS.a95p]: 'М95 -',
+    [FUELS.gs]: 'ГАЗ -'
   }
 
   parse(data) {
@@ -18,7 +19,7 @@ class WogParser {
           .find((line) => _.includes(line, pattern))
           .value()
 
-        return this._parseFuel(fuelData)
+        return fuelData ? this._parseFuel(fuelData) : null
       })
       .pickBy()
       .value()

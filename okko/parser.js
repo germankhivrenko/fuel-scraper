@@ -24,30 +24,29 @@ const toFuels = (means) => {
 // TODO: const toMeans = (fuels) => {}
 
 class OkkoParser {
-  // TODO: A92
   static FUEL_CODES = {
     'DP_EVRO': FUELS.ds,
     'PullsDiesel': FUELS.dsp,
+    'A92_EVRO': FUELS.a92,
     'A95_EVRO': FUELS.a95,
     'Pulls95': FUELS.a95p,
     'Gas': FUELS.gs
   }
   static FUEL_PATTERNS = {
-    // TODO: fill all
-    [FUELS.ds]: 'Not Implemented',
-    [FUELS.dsp]: 'Not Implemented',
+    [FUELS.ds]: 'ДП: ',
+    [FUELS.dsp]: 'PULLS Diesel: ',
     [FUELS.a92]: 'А-92: ',
     [FUELS.a95]: 'А-95: ',
     [FUELS.a95p]: 'PULLS 95: ',
-    [FUELS.gs]: 'Not Implemented'
+    [FUELS.gs]: 'ГАЗ: '
   }
   static MEAN_PATTERNS = {
     // TODO: fill all
     [MEANS.cash]: 'За готівку і банківські картки доступно*:',
     [MEANS.coupon]: 'З паливною карткою і талонами доступно:',
     [MEANS.fuel_card]: 'З паливною карткою і талонами доступно:',
-    [MEANS.brand_wallet]: 'Not Implemented',
-    [MEANS.special_transport]: 'Not Implemented'
+    // [MEANS.brand_wallet]: 'Not Implemented',
+    // [MEANS.special_transport]: 'Not Implemented'
   }
 
   parse(data) {
@@ -60,7 +59,8 @@ class OkkoParser {
         notification,
         fuel_type,
         coordinates: {lng, lat}
-      }
+      },
+      fetchedAt
     } = data
 
     const address = Typ_naselenogo_punktu + ' ' + Naselenyy_punkt + 
@@ -99,7 +99,8 @@ class OkkoParser {
         type: 'Point',
         coordinates: [lng, lat]
       },
-      fuels: toFuels(means)
+      fuels: toFuels(means),
+      fetchedAt
     }
   }
 

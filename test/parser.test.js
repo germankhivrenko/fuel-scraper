@@ -126,7 +126,8 @@ describe('Parser', function() {
             '<div><p>*при досягненні залишків пального на АЗК критичного рівня, відпуск не здійснюється.</p></div>',
           type_azk: 2
         },
-        widgets: []
+        widgets: [],
+        fetchedAt: new Date('2022-05-26T21:12:00')
       }
       const parser = new OkkoParser()
       const actual = parser.parse(data)
@@ -165,7 +166,8 @@ describe('Parser', function() {
         }
       }
 
-      assert.deepEqual(actual, expected)
+      assert.deepEqual(_.omit(actual, 'fetchedAt'), expected)
+      assert.equal(actual.fetchedAt - new Date('2022-05-26T21:12:00'), 0)
     })
   })
 })
