@@ -7,9 +7,7 @@ const {createScraper: createOkkoScraper} = require('./okko')
 ;(async () => {
   try {
     // setup mongo client
-    const mongoURL = `mongodb://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}`
-      + `@${process.env.MONGO_HOST}:${process.env.MONGO_PORT}`
-    const client = new MongoClient(mongoURL)
+    const client = new MongoClient(process.env.MONGO_URL)
     await client.connect()
     console.log('Successfully connected')
     const db = client.db(process.env.MONGO_DB)
@@ -25,8 +23,7 @@ const {createScraper: createOkkoScraper} = require('./okko')
         const update = {$set: station}
         const options = {upsert: true}
 
-        console.log('===================== Upserting station =====================')
-        console.dir(station)
+        console.dir(`Upserting station ${station.brand} ${station.externalId}`)
         const res = await coll.updateOne(filter, update, options)
       }
     }, 5 * 60 * 1000)
@@ -43,7 +40,7 @@ const {createScraper: createOkkoScraper} = require('./okko')
         console.dir(station)
         const res = await coll.updateOne(filter, update, options)
       }
-    }, 15 * 60 * 1000)
+    }, 10 * 60 * 1000)
     
     // run one scraper iteration
     job1.start()
