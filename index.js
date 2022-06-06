@@ -6,7 +6,6 @@ const {Factory: WogFactory} = require('./src/wog')
 const {Factory: OkkoFactory} = require('./src/okko')
 const {BRANDS} = require('./src/const')
 
-
 ;(async () => {
   try {
     // setup mongo client
@@ -48,21 +47,22 @@ const {BRANDS} = require('./src/const')
     // run one scraper iteration
     _.each(jobs, (job) => job.start())
 
-    // FIXME: graceful stop
+    const shutdown = async () => {
+      console.log('Start stopping')
+      await Promise.all(_.map(jobs, (job) => job.stop()))
+      console.log('Job has been stopped properly')
+      await client.close()
+      console.log('Successfully closed')
+      
+      process.exit(0)
+    }
+
     // shut down gracefully
     process.once('SIGINT', async () => {
-      console.log('Start stopping')
-      await Promise.all(_.map(jobs, (job) => job.stop()))
-      console.log('Job has been stopped properly')
-      await client.close()
-      console.log('Successfully closed')
+      await shutdown()
     })
     process.once('SIGTERM', async () => {
-      console.log('Start stopping')
-      await Promise.all(_.map(jobs, (job) => job.stop()))
-      console.log('Job has been stopped properly')
-      await client.close()
-      console.log('Successfully closed')
+      await shutdown()
     })
   } catch(err) {
     console.error(err)
