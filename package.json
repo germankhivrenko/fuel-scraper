@@ -1,11 +1,11 @@
 {
-  "name": "fuel-scraper",
+  "name": "fuel-hunter-scraper",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "test": "mocha test/**/*.test.js"
+    "test": "mocha 'test/**/*.test.js'"
   },
   "keywords": [],
   "author": "",

@@ -1,7 +1,8 @@
 const _ = require('lodash')
 const {FUELS, MEANS, BRANDS} = require('../const')
+const {Parser} = require('../parser')
 
-class WogParser {
+class WogParser extends Parser {
   static FUEL_PATTERNS = {
     [FUELS.ds]: 'ДП -',
     [FUELS.dsp]: 'МДП+ -',

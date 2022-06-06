@@ -1,7 +1,7 @@
 const {strict: assert} = require('assert')
 const {scheduler} = require('timers/promises')
 const {describe, it} = require('mocha')
-const {Job} = require('../job')
+const {Job} = require('../src/job')
 
 describe('Job', function() {
   afterEach(async function() {

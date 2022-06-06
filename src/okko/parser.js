@@ -1,29 +1,9 @@
 const _ = require('lodash')
 const {convert} = require('html-to-text')
 const {FUELS, MEANS, BRANDS} = require('../const')
+const {Parser} = require('../parser')
 
-const toFuels = (means) => {
-  return _.chain(means)
-    .mapValues('fuels')
-    .flatMap(_.keys)
-    .uniq()
-    .reduce((acc, fuel) => {
-      return {
-        ...acc, 
-        [fuel]: {
-          inStock: true, 
-          means: _.reduce(MEANS, (acc, mean) => {
-            const limit = _.get(means, `${mean}.fuels.${fuel}`)
-            return limit ? {...acc, [mean]: limit} : acc
-          }, {})
-        }
-      }
-    }, {})
-    .value()
-}
-// TODO: const toMeans = (fuels) => {}
-
-class OkkoParser {
+class OkkoParser extends Parser {
   static FUEL_CODES = {
     'DP_EVRO': FUELS.ds,
     'PullsDiesel': FUELS.dsp,
@@ -99,7 +79,7 @@ class OkkoParser {
         type: 'Point',
         coordinates: [lng, lat]
       },
-      fuels: toFuels(means),
+      fuels: this.toFuels(means),
       fetchedAt
     }
   }
