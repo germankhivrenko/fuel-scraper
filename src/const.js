@@ -7,6 +7,17 @@ const FUELS = {
   gs: 'gs'
 }
 
+const getFuelName = (fuel) => {
+  return {
+    [FUELS.ds]: 'Дизель',
+    [FUELS.dsp]: 'Дизель Преміум',
+    [FUELS.a92]: 'A92',
+    [FUELS.a95]: 'A95',
+    [FUELS.a95p]: 'A95 Преміум',
+    [FUELS.gs]: 'Газ',
+  }[fuel]
+}
+
 const MEANS = {
   cash: 'cash',
   brand_wallet: 'brand_wallet',
@@ -20,9 +31,18 @@ const BRANDS = {
   okko: 'okko'
 }
 
+const getBrandName = (brand) => {
+  return {
+    [BRANDS.wog]: 'WOG',
+    [BRANDS.wog]: 'OKKO'
+  }[brand]
+}
+
 module.exports = {
   FUELS,
+  getFuelName,
   MEANS,
-  BRANDS
+  BRANDS,
+  getBrandName
 }
 
