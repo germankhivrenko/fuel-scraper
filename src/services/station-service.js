@@ -20,9 +20,13 @@ class StationService {
     if (_.isEmpty(appearedFuels)) {
       return
     }
+    console.log('=============== FUELS')
+    console.log(appearedFuels)
 
     const query = {subscribed: true, fuels: appearedFuels}
     const users = await this._userRepository.findNear({location: next.location, query})
+    console.log('=============== USERS')
+    console.log(users)
 
     for (const user of users) {
       const wantedFuels = user.getIntersectFuels(appearedFuels)

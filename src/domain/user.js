@@ -1,8 +1,8 @@
 const _ = require('lodash')
 
 class User {
-  constructor({id, tgId, maxDistance, subscribed, location, fuels, distance} = {}) {
-    this.id = id
+  constructor({_id, tgId, maxDistance, subscribed, location, fuels, distance} = {}) {
+    this.id = _id
     this.tgId = tgId
     this.maxDistance = maxDistance
     this.subscribed = subscribed
