@@ -6,7 +6,7 @@ class TgNotificationService {
   }
 
   async notifyUser(user, {msg, location}) {
-    const {coordinates: [latitude, longitude]} = location
+    const {coordinates: [longitude, latitude]} = location
     await this._bot.telegram.sendMessage(user.tgId, msg)
     await this._bot.telegram.sendLocation(user.tgId, latitude, longitude)
   }
