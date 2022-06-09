@@ -1,5 +1,4 @@
 const _ = require('lodash')
-const {request} = require('undici')
 const {Extractor} = require('../extractor')
 
 class WogExtractor extends Extractor {

@@ -6,6 +6,7 @@ const {Job} = require('./src/job')
 const {Factory: WogFactory} = require('./src/wog')
 const {Factory: OkkoFactory} = require('./src/okko')
 const {Factory: UpgFactory} = require('./src/upg')
+const {Factory: SocarFactory} = require('./src/socar')
 const {BRANDS} = require('./src/const')
 const {Station} = require('./src/domain/station')
 const {TgNotificationService} = require('./src/services/tg-notification-service')
@@ -28,13 +29,15 @@ const {createBot} = require('./src/bot')
     const notificationService = new TgNotificationService(bot)
     const stationService = new StationService(userRepository, notificationService)
     await bot.launch()
+    console.log('======================= BOT LAUNCHED ======================')
 
     // setup scraper jobs
-    const jobs = _.map([BRANDS.upg, BRANDS.okko, BRANDS.wog], (brand) => {
+    const jobs = _.map([BRANDS.socar, BRANDS.upg, BRANDS.okko, BRANDS.wog], (brand) => {
       const Factory = {
         [BRANDS.okko]: OkkoFactory,
         [BRANDS.wog]: WogFactory,
         [BRANDS.upg]: UpgFactory,
+        [BRANDS.socar]: SocarFactory
       }[brand]
       const factory = new Factory()
       const extractor = factory.createExtractor()
@@ -42,7 +45,8 @@ const {createBot} = require('./src/bot')
       const wait = {
         [BRANDS.okko]: 5 * 60 * 1000,
         [BRANDS.wog]: 5 * 60 * 1000,
-        [BRANDS.upg]: 5 * 60 * 1000
+        [BRANDS.upg]: 5 * 60 * 1000,
+        [BRANDS.socar]: 5 * 60 * 1000
       }[brand]
 
       return Job.create(async () => {

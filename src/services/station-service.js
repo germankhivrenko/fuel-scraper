@@ -35,7 +35,7 @@ class StationService {
       const km = _.round(user.distance / 1000, 1)
       const timeStr = fetchedAt.toLocaleTimeString('en-GB', {timeZone: 'Europe/Helsinki'});
       const msg = `${fuelsStr} на ${getBrandName(brand)}, ${address} (${km} км)` + 
-        `\n\n${desc}\n(дані на ${timeStr})`
+        `\n\n${desc}\n\nP.S. дані на ${timeStr}`
       try {
         await this._notificationService.notifyUser(user, {msg, location});
       } catch(err) {

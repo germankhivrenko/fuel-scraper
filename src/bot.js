@@ -61,8 +61,8 @@ const createBot = ({usersDAO, db}) => {
       '1) Обрати паливо, за яким ви полюєте - /fuels\n' +
       // '2) Обрати способи для купівлі (чи отримання) пального (напр. готівка чи паливна карта, чи можливо ви водій спецтранспорту)\n' +
       '2) Поділитися своєю локацією - /location\n' +
-      '3) Оберіть бажаний радіус пошуку - /distance\n\n' +
-      '4) Шукайте доступне на даний момент паливо - /search\n' +
+      '3) Оберіть бажаний радіус пошуку - /distance\n' +
+      '4) Шукайте доступне на даний момент паливо - /search\n\n' +
       `P.S. на даний момент ми слідкуємо за наступними АЗК: ${brandsStr}.\n\n` +
       'P.P.S. Побажання, відгуки і т.д.: germankhivrenko@gmail.com')
     const user = {tgId: ctx.from.id}
@@ -164,7 +164,7 @@ const createBot = ({usersDAO, db}) => {
         await bot.telegram.sendMessage(
           user.tgId,
           `${BRAND_NAMES[brand]}, ${address} (${distanceKm} км)\n\n` +
-          `${desc}\n(дані на ${timeStr})`)
+          `${desc}\n\nP.S дані на ${timeStr}`)
         await bot.telegram.sendLocation(user.tgId, latitude, longitude)
       } catch(err) {
         console.error(err)
