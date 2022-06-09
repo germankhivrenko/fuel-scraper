@@ -50,7 +50,7 @@ describe('StationService', function() {
       }
     }
     const curr = new Station({location, fuels: currFuels})
-    const next = new Station({location, fuels: nextFuels})
+    const next = new Station({location, fuels: nextFuels, fetchedAt: new Date()})
     const userRepository = {
       findNear: sinon.stub().returns(users)
     }
@@ -64,7 +64,7 @@ describe('StationService', function() {
       location,
       query: {
         subscribed: true,
-        fuels: [FUELS.ds]
+        fuels: {$in: [FUELS.ds]}
       }
     }).calledOnce)
     assert(notificationService.notifyUser.calledOnce)
@@ -114,7 +114,7 @@ describe('StationService', function() {
       }
     }
     const curr = new Station({location, fuels: currFuels})
-    const next = new Station({location, fuels: nextFuels})
+    const next = new Station({location, fuels: nextFuels, fetchedAt: new Date()})
     const userRepository = {
       findNear: sinon.stub().returns(users)
     }
@@ -128,7 +128,7 @@ describe('StationService', function() {
       location,
       query: {
         subscribed: true,
-        fuels: [FUELS.ds, FUELS.dsp]
+        fuels: {$in: [FUELS.ds, FUELS.dsp]}
       }
     }).calledOnce)
     assert(notificationService.notifyUser.calledOnce)
@@ -171,7 +171,7 @@ describe('StationService', function() {
       }
     }
     const curr = new Station({location, fuels: currFuels})
-    const next = new Station({location, fuels: nextFuels})
+    const next = new Station({location, fuels: nextFuels, fetchedAt: new Date()})
     const userRepository = {
       findNear: sinon.stub()
     }

@@ -1,7 +1,8 @@
+
 const _ = require('lodash')
 const {Extractor} = require('../extractor')
 
-class OkkoExtractor extends Extractor {
+class UpgExtractor extends Extractor {
   constructor(puppeteer) {
     super()
 
@@ -14,9 +15,9 @@ class OkkoExtractor extends Extractor {
       args: ['--no-sandbox']
     })
     const page = await browser.newPage()
-    await page.goto('https://www.okko.ua/fuel-map')
+    await page.goto('https://upg.ua/merezha_azs/')
     const fetchedAt = new Date()
-    const stationsData = await page.evaluate(() => window.__NUXT__.data[0].data[0].data.list.collection)
+    const stationsData = await page.evaluate(() => window.objmap.data)
     await browser.close()
 
     return {
@@ -42,6 +43,6 @@ class OkkoExtractor extends Extractor {
 }
 
 module.exports = {
-  OkkoExtractor
+  UpgExtractor
 }
 

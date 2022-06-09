@@ -31,14 +31,17 @@ class StationService {
     for (const user of users) {
       const wantedFuels = user.getIntersectFuels(appearedFuels)
       const fuelsStr = _.chain(wantedFuels).map(getFuelName).join(', ').value()
-      const {brand, address, desc, location} = next // TODO: add fetchedAt time
+      const {brand, address, desc, location, fetchedAt} = next
       const km = _.round(user.distance / 1000, 1)
-      const msg = `${fuelsStr} на ${getBrandName(brand)}, ${address} (${km} км)\n\n${desc}`
+      const timeStr = fetchedAt.toLocaleTimeString('en-GB', {timeZone: 'Europe/Helsinki'});
+      const msg = `${fuelsStr} на ${getBrandName(brand)}, ${address} (${km} км)` + 
+        `\n\n${desc}\n(дані на ${timeStr})`
       try {
         await this._notificationService.notifyUser(user, {msg, location});
       } catch(err) {
         console.log(err)
-        if (err.response && err.response.statusCode === 403) {
+        const errCode = _.get(err, 'response.error_code')
+        if (errCode === 403) {
           await this._userRepository.updateOne({tgId: user.tgId}, {subscribed: false})
         }
       }

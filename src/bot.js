@@ -52,27 +52,19 @@ const createBot = ({usersDAO, db}) => {
       })
   }
   
+  const brandsStr = _.chain(BRAND_NAMES).map().join(', ').value()
   bot.start(async (ctx) => {
-    await ctx.reply('Ласкаво просимо!\n' +
+    await ctx.reply('Ласкаво просимо!\n\n' +
       'Цей бот допоможе слідкувати за наявністю потрібного палива на АЗС навколо тебе.\n' +
       'Шукай паливо доступне на данний момент, а також отримуй повідомлення щойно воно з\'явиться в наявності.\n\n' +
       'Для цього Вам потрібно:\n' +
       '1) Обрати паливо, за яким ви полюєте - /fuels\n' +
       // '2) Обрати способи для купівлі (чи отримання) пального (напр. готівка чи паливна карта, чи можливо ви водій спецтранспорту)\n' +
       '2) Поділитися своєю локацією - /location\n' +
-      '3) Шукайте доступне на даний момент паливо - /search\n' +
-      '3.1) Для отримання повідомлень Ви маєте бути підпісаним на них (Ви автоматично підписуєтесь при старті бота)\n' +
-      '3.2) Оберіть бажаний радіус пошуку - /distance\n\n' +
-      'P.S. на даний момент ми слідкуємо за наступними АЗК: OKKO, WOG.\n\n' +
+      '3) Оберіть бажаний радіус пошуку - /distance\n\n' +
+      '4) Шукайте доступне на даний момент паливо - /search\n' +
+      `P.S. на даний момент ми слідкуємо за наступними АЗК: ${brandsStr}.\n\n` +
       'P.P.S. Побажання, відгуки і т.д.: germankhivrenko@gmail.com')
-      // 'Команди:\n' +
-      // '/fuels - вибір пального\n' +
-      // // '/means - вибір способів для купівлі/отримання пального\n' +
-      // '/location - оновити свою локацію\n' +
-      // '/search - знайти паливо доступне на данний момент\n' +
-      // '/distance - встановити радіус пошуку\n' +
-      // '/unsubscribe - скасувати підписку на повідомлення\n' +
-      // '/subscribe - підписатися на повідомлення\n')
     const user = {tgId: ctx.from.id}
     const foundUser = await usersDAO.findOne(user)
     const maxDistance = _.get(foundUser, 'maxDistance') || 50000
@@ -168,10 +160,11 @@ const createBot = ({usersDAO, db}) => {
       const {desc, brand, address, distance, fetchedAt, location: {coordinates: [longitude, latitude]}} = station
       const distanceKm = (station.distance / 1000).toFixed(1)
       try {
+        const timeStr = fetchedAt.toLocaleTimeString('en-GB', {timeZone: 'Europe/Helsinki'});
         await bot.telegram.sendMessage(
           user.tgId,
           `${BRAND_NAMES[brand]}, ${address} (${distanceKm} км)\n\n` +
-          `${desc}`)
+          `${desc}\n(дані на ${timeStr})`)
         await bot.telegram.sendLocation(user.tgId, latitude, longitude)
       } catch(err) {
         console.error(err)

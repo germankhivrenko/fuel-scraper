@@ -38,12 +38,14 @@ const MEAN_NAMES = {
 
 const BRANDS = {
   wog: 'wog',
-  okko: 'okko'
+  okko: 'okko',
+  upg: 'upg'
 }
 
 const BRAND_NAMES = {
   [BRANDS.wog]: 'WOG',
-  [BRANDS.okko]: 'OKKO'
+  [BRANDS.okko]: 'OKKO',
+  [BRANDS.upg]: 'UPG'
 }
 
 const getBrandName = (brand) => {
