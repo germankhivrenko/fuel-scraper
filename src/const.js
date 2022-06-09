@@ -43,7 +43,7 @@ const BRANDS = {
 
 const BRAND_NAMES = {
   [BRANDS.wog]: 'WOG',
-  [BRANDS.wog]: 'OKKO'
+  [BRANDS.okko]: 'OKKO'
 }
 
 const getBrandName = (brand) => {

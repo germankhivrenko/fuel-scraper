@@ -171,7 +171,7 @@ const createBot = ({usersDAO, db}) => {
         await bot.telegram.sendMessage(
           user.tgId,
           `${BRAND_NAMES[brand]}, ${address} (${distanceKm} км)\n\n` +
-          `${desc}\n\n` + `P.S. дані на ${fetchedAt.toLocaleTimeString()}`)
+          `${desc}`)
         await bot.telegram.sendLocation(user.tgId, latitude, longitude)
       } catch(err) {
         console.error(err)
@@ -179,22 +179,47 @@ const createBot = ({usersDAO, db}) => {
     }
   })
 
+  const toKm = (m) => m / 1000
+  const DISTANCES = [5000, 10000, 15000, 20000, 30000, 50000, 80000, 100000]
+  const DISTANCE_KEYBOARD = _.chain(DISTANCES)
+    .map((distance) => ({text: `${toKm(distance)} км`, callback_data: distance.toString()}))
+    .chunk(4)
+    .value()
+
   bot.command('distance', async (ctx) => {
     await bot.telegram.sendMessage(
       ctx.chat.id,
       'Оберіть радіус пошуку',
       {
         reply_markup: {
-          inline_keyboard: [
-            [
-              {text: '20 км', callback_data: '20km'},
-              {text: '50 км', callback_data: '50km'},
-              {text: '100 км', callback_data: '100km'}
-            ]
-          ] 
+          inline_keyboard: DISTANCE_KEYBOARD 
         }
       })
   })
+
+  _.each(DISTANCES, (distance) => {
+    bot.action(distance.toString(), async (ctx) => {
+      await usersDAO.updateOne({tgId: ctx.from.id}, {maxDistance: distance}) 
+      const user = await usersDAO.findOne({tgId: ctx.from.id})
+      await ctx.reply(formatSettingsMsg(user))
+    })
+  })
+
+  // bot.action('20km', async (ctx) => {
+  //   await usersDAO.updateOne({tgId: ctx.from.id}, {maxDistance: 20000}) 
+  //   const user = await usersDAO.findOne({tgId: ctx.from.id})
+  //   await ctx.reply(formatSettingsMsg(user))
+  // })
+  // bot.action('50km', async (ctx) => {
+  //   await usersDAO.updateOne({tgId: ctx.from.id}, {maxDistance: 50000}) 
+  //   const user = await usersDAO.findOne({tgId: ctx.from.id})
+  //   await ctx.reply(formatSettingsMsg(user))
+  // })
+  // bot.action('100km', async (ctx) => {
+  //   await usersDAO.updateOne({tgId: ctx.from.id}, {maxDistance: 100000}) 
+  //   const user = await usersDAO.findOne({tgId: ctx.from.id})
+  //   await ctx.reply(formatSettingsMsg(user))
+  // })
 
   // actions 
   _.each(FUELS, (fuel) => {
@@ -220,23 +245,7 @@ const createBot = ({usersDAO, db}) => {
   // bot.action('clear_means', async (ctx) => {
   //   await usersDAO.updateOne({tgId: ctx.from.id}, {means: []}) 
   //   await ctx.reply('Усі способи купівлі/отримання видалені')
-  // })
-  
-  bot.action('20km', async (ctx) => {
-    await usersDAO.updateOne({tgId: ctx.from.id}, {maxDistance: 20000}) 
-    const user = await usersDAO.findOne({tgId: ctx.from.id})
-    await ctx.reply(formatSettingsMsg(user))
-  })
-  bot.action('50km', async (ctx) => {
-    await usersDAO.updateOne({tgId: ctx.from.id}, {maxDistance: 50000}) 
-    const user = await usersDAO.findOne({tgId: ctx.from.id})
-    await ctx.reply(formatSettingsMsg(user))
-  })
-  bot.action('100km', async (ctx) => {
-    await usersDAO.updateOne({tgId: ctx.from.id}, {maxDistance: 100000}) 
-    const user = await usersDAO.findOne({tgId: ctx.from.id})
-    await ctx.reply(formatSettingsMsg(user))
-  })
+  // })  
 
   bot.on('message', async (ctx) => {
     const location = ctx.message.location

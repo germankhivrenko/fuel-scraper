@@ -16,6 +16,7 @@ class UserRepository {
         $geoNear: {
           near: location,
           distanceField: 'distance',
+          // maxDistance: 100000,
           spherical: true,
           query
         }

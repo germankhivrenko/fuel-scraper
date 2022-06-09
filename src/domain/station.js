@@ -2,7 +2,13 @@ const _ = require('lodash')
 const {MEANS} = require('../const')
 
 class Station {
-  constructor({_id, brand, externalId, address, desc, fetchedAt, location, fuels} = {}) {
+  constructor(data) {
+    if (!data) {
+      return
+    }
+    
+    const {_id, brand, externalId, address, desc, fetchedAt, location, fuels} = data
+
     this.id = _id
     this.brand = brand
     this.externalId = externalId

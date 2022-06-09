@@ -2,17 +2,13 @@ const _ = require('lodash')
 
 class TgNotificationService {
   constructor(bot) {
-    this._bot
+    this._bot = bot
   }
 
   async notifyUser(user, {msg, location}) {
-    try {
-      const {latitude, longitude} = location
-      await this._bot.telegram.sendMessage(user.tgId, msg)
-      await this._bot.telegram.sendLocation(user.tgId, latitude, longitude)
-    } catch(err) {
-      console.error(err)
-    }
+    const {coordinates: [latitude, longitude]} = location
+    await this._bot.telegram.sendMessage(user.tgId, msg)
+    await this._bot.telegram.sendLocation(user.tgId, latitude, longitude)
   }
 }
 

@@ -1,3 +1,4 @@
+const {scheduler} = require('timers/promises');
 require('dotenv').config()
 const _ = require('lodash')
 const {MongoClient} = require('mongodb')
@@ -21,14 +22,14 @@ const {createBot} = require('./src/bot')
     const coll = db.collection('stations')
 
     // init services
-    const notificationService = new TgNotificationService()
     const userRepository = new UserRepository(db)
-    const stationService = new StationService(userRepository, notificationService)
     const bot = createBot({usersDAO: userRepository, db})
+    const notificationService = new TgNotificationService(bot)
+    const stationService = new StationService(userRepository, notificationService)
     await bot.launch()
 
     // setup scraper jobs
-    const jobs = _.map([/*BRANDS.okko,*/ BRANDS.wog], (brand) => {
+    const jobs = _.map([BRANDS.okko, BRANDS.wog], (brand) => {
       const Factory = {
         [BRANDS.okko]: OkkoFactory,
         [BRANDS.wog]: WogFactory
@@ -50,22 +51,23 @@ const {createBot} = require('./src/bot')
           const update = {$set: station}
           const options = {upsert: true}
 
-          console.dir(`Upserting station ${station.brand} ${station.externalId}`)
-          const curr = new Station(await coll.findOne(filter))
+          console.dir(`${new Date().toISOString()} Upserting station ${station.brand} ${station.externalId}`)
+          const s = await coll.findOne(filter)
+          const curr = new Station(s)
           const next = new Station(station)
           const res = await coll.updateOne(filter, update, options)
 
-          // console.log('===================== CURR')
-          // console.dir(curr)
-          // console.log('===================== NEXT')
-          // console.dir(next)
           await stationService.handleChange(curr, next)
         }
       }, wait)
     })
     
     // run one scraper iteration
-    _.each(jobs, (job) => job.start())
+    for (const job of jobs) {
+      job.start()
+      console.log('============= JOB STARTED =================')
+      await scheduler.wait(60 * 1000)
+    }
 
     const shutdown = async () => {
       console.log('Start stopping')
