@@ -160,7 +160,7 @@ const createBot = ({usersDAO, db}) => {
       const {desc, brand, address, distance, fetchedAt, location: {coordinates: [longitude, latitude]}} = station
       const distanceKm = (station.distance / 1000).toFixed(1)
       try {
-        const timeStr = fetchedAt.toLocaleTimeString('en-GB', {timeZone: 'Europe/Helsinki'});
+        const timeStr = fetchedAt.toLocaleTimeString('en-GB', {timeZone: 'Europe/Helsinki'})
         await bot.telegram.sendMessage(
           user.tgId,
           `${BRAND_NAMES[brand]}, ${address} (${distanceKm} км)\n\n` +

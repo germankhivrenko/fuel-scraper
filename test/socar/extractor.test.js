@@ -5,7 +5,7 @@ const {SocarExtractor} = require('../../src/socar/extractor')
 
 class SocarAPIMock {
   getStationList() {
-    return Promise.resolve({data: [{id: 1}, {id: 2}, {id: 3}]})
+    return Promise.resolve([{id: 1}, {id: 2}, {id: 3}])
   }
 }
 
