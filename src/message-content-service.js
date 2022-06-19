@@ -15,11 +15,12 @@ class MessageContentService {
       + `\n/fuels - Обрати бажане паливо`
       + `\n/location - Поділитися локацією`
       + `\n/distance - Обрати радіус пошуку (50 км за замовчуванням)`
-      + `\nКорисні команди:`
+      + `\n\nКорисні команди:`
       + `\n/search - Шукати пальне`
       + `\n/settings - Показати налаштування пошуку`
       + `\n/unsubscribe - Скасувати підписку на повідомлення`
-      + `\n/subscribe -  Підписатить на повідомлення`
+      + `\n/subscribe - Підписатить на повідомлення`
+      + `\n/help - Допомога`
   }
 
   getStartContent() {
@@ -46,14 +47,16 @@ class MessageContentService {
       return `Пальне для пошуку не вибране - /fuels`
     }
 
-    if (_.isEmpty(user.location)) {
-      return `Ви не поділились локацією - /location`
-    }
-
     const fuelsStr = _.chain(user.fuels).map(getFuelName).join(', ').value()
     const distanceStr = this._formatDistance(user.maxDistance)
 
-    return `Пошук ${fuelsStr} в радіусі ${distanceStr}`
+    const settingsStr = `Слідкуємо за ${fuelsStr} в радіусі ${distanceStr}`
+
+    if (_.isEmpty(user.location)) {
+      return `${settingsStr}. Але Ви не поділились локацією - /location`
+    }
+
+    return `${settingsStr}. Шукати - /search`
   }
 
   _formatDistance(distance) {

@@ -13,6 +13,7 @@ const {TgNotificationService} = require('./src/services/tg-notification-service'
 const {UserRepository} = require('./src/repositories/user-repository')
 const {StationService} = require('./src/services/station-service')
 const {createBot} = require('./src/bot')
+const {MessageContentService} = require('./src/message-content-service')
 
 ;(async () => {
   try {
@@ -24,10 +25,11 @@ const {createBot} = require('./src/bot')
     const coll = db.collection('stations')
 
     // init services
+    const messageContentService = new MessageContentService()
     const userRepository = new UserRepository(db)
-    const bot = createBot({usersDAO: userRepository, db})
+    const bot = createBot({usersDAO: userRepository, db, messageContentService})
     const notificationService = new TgNotificationService(bot)
-    const stationService = new StationService(userRepository, notificationService)
+    const stationService = new StationService(userRepository, notificationService, messageContentService)
     await bot.launch()
     console.log('======================= BOT LAUNCHED ======================')
 

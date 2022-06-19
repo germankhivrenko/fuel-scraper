@@ -6,8 +6,9 @@ class UserRepository {
     this._db = db
   }
 
-  findOne(filter) {
-    return this._db.collection('users').findOne(filter)
+  async findOne(filter) {
+    const plain = await this._db.collection('users').findOne(filter)
+    return new User(plain)
   }
 
   async findNear({location, query}) {

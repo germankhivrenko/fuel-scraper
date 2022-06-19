@@ -2,9 +2,10 @@ const _ = require('lodash')
 const {FUELS, getFuelName, getBrandName} = require('../const')
 
 class StationService {
-  constructor(userRepository, notificationService) {
+  constructor(userRepository, notificationService, messageContentService) {
     this._userRepository = userRepository 
     this._notificationService = notificationService
+    this._messageContentService = messageContentService
   }
 
   async handleChange(curr, next) {
@@ -29,13 +30,9 @@ class StationService {
     console.log(_.map(users, 'id'))
 
     for (const user of users) {
-      const wantedFuels = user.getIntersectFuels(appearedFuels)
-      const fuelsStr = _.chain(wantedFuels).map(getFuelName).join(', ').value()
-      const {brand, address, desc, location, fetchedAt} = next
-      const km = _.round(user.distance / 1000, 1)
-      const timeStr = fetchedAt.toLocaleTimeString('en-GB', {timeZone: 'Europe/Helsinki'});
-      const msg = `${fuelsStr} на ${getBrandName(brand)}, ${address} (${km} км)` + 
-        `\n\n${desc}\n\nP.S. дані на ${timeStr}`
+      const fuels = user.getIntersectFuels(appearedFuels)
+      const {location} = next
+      const msg = this._messageContentService.getFuelOnStationContent(next, fuels, user.distance)
       try {
         await this._notificationService.notifyUser(user, {msg, location});
       } catch(err) {
