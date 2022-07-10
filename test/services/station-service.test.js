@@ -57,7 +57,10 @@ describe('StationService', function() {
     const notificationService = {
       notifyUser: sinon.stub()
     }
-    const stationService = new StationService(userRepository, notificationService)
+    const messageContentService = {
+      getFuelOnStationContent: sinon.stub()
+    }
+    const stationService = new StationService(userRepository, notificationService, messageContentService)
     await stationService.handleChange(curr, next)
 
     assert(userRepository.findNear.withArgs({
@@ -121,7 +124,10 @@ describe('StationService', function() {
     const notificationService = {
       notifyUser: sinon.stub()
     }
-    const stationService = new StationService(userRepository, notificationService)
+    const messageContentService = {
+      getFuelOnStationContent: sinon.stub()
+    }
+    const stationService = new StationService(userRepository, notificationService, messageContentService)
     await stationService.handleChange(curr, next)
 
     assert(userRepository.findNear.withArgs({
