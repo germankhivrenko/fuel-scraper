@@ -23,11 +23,12 @@ describe('MessageContentService', function() {
       + `\n/fuels - Обрати бажане паливо`
       + `\n/location - Поділитися локацією`
       + `\n/distance - Обрати радіус пошуку (50 км за замовчуванням)`
-      + `\nКорисні команди:`
+      + `\n\nКорисні команди:`
       + `\n/search - Шукати пальне`
       + `\n/settings - Показати налаштування пошуку`
       + `\n/unsubscribe - Скасувати підписку на повідомлення`
-      + `\n/subscribe -  Підписатить на повідомлення`
+      + `\n/subscribe - Підписатить на повідомлення`
+      + `\n/help - Допомога`
     assert.equal(actual, expected)
   })
 
@@ -39,11 +40,12 @@ describe('MessageContentService', function() {
       + `\n/fuels - Обрати бажане паливо`
       + `\n/location - Поділитися локацією`
       + `\n/distance - Обрати радіус пошуку (50 км за замовчуванням)`
-      + `\nКорисні команди:`
+      + `\n\nКорисні команди:`
       + `\n/search - Шукати пальне`
       + `\n/settings - Показати налаштування пошуку`
       + `\n/unsubscribe - Скасувати підписку на повідомлення`
-      + `\n/subscribe -  Підписатить на повідомлення`
+      + `\n/subscribe - Підписатить на повідомлення`
+      + `\n/help - Допомога`
     assert.equal(actual, expected)
   })
 
@@ -81,7 +83,7 @@ describe('MessageContentService', function() {
       }
     })
     const actual = msgContentService.getSearchSettings(user)
-    const expected = `Пошук A95, A95 Преміум в радіусі 15 км`
+    const expected = `Слідкуємо за A95, A95 Преміум в радіусі 15 км. Шукати - /search`
     assert.equal(actual, expected)
   })
 })
