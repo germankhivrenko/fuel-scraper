@@ -22,7 +22,7 @@ describe('MessageContentService', function() {
     const expected = `Для пошуку та отримання повідомлень Вам потрібно:`
       + `\n/fuels - Обрати бажане паливо`
       + `\n/location - Поділитися локацією`
-      + `\n/distance - Обрати радіус пошуку (50 км за замовчуванням)`
+      + `\n/distance - Обрати радіус пошуку (10 км за замовчуванням)`
       + `\n\nКорисні команди:`
       + `\n/search - Шукати пальне`
       + `\n/settings - Показати налаштування пошуку`
@@ -39,7 +39,7 @@ describe('MessageContentService', function() {
       + `\n\nДля пошуку та отримання повідомлень Вам потрібно:`
       + `\n/fuels - Обрати бажане паливо`
       + `\n/location - Поділитися локацією`
-      + `\n/distance - Обрати радіус пошуку (50 км за замовчуванням)`
+      + `\n/distance - Обрати радіус пошуку (10 км за замовчуванням)`
       + `\n\nКорисні команди:`
       + `\n/search - Шукати пальне`
       + `\n/settings - Показати налаштування пошуку`
@@ -63,13 +63,12 @@ describe('MessageContentService', function() {
       `Дизель, Дизель Преміум на OKKO, Test Address Line (2.5 км)`
       + `\n\nTest Station Description`
       + `\n\nP.S. дані на 16:47:00 Сб`
-      + `\n/help - допомога`
     assert.equal(actual, expected)
   })
 
   it('creates nothing found message content', function () {
     const actual = msgContentService.getNothingFoundContent()
-    const expected = `За Вашим запитом нічого не знайдено.\n/help - допомога`
+    const expected = `За Вашим запитом нічого не знайдено. /help - допомога`
     assert.equal(actual, expected)
   })
 

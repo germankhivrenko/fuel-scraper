@@ -48,7 +48,7 @@ const createBot = ({usersDAO, db, messageContentService}) => {
     await ctx.reply(msg)
     const user = {tgId: ctx.from.id}
     const foundUser = await usersDAO.findOne(user)
-    const maxDistance = _.get(foundUser, 'maxDistance') || 50000
+    const maxDistance = _.get(foundUser, 'maxDistance') || 10000
     await usersDAO.upsertOne(user, {...user, maxDistance, subscribed: true}) 
     // await requestLocation(ctx)
   })
@@ -139,10 +139,10 @@ const createBot = ({usersDAO, db, messageContentService}) => {
   })
 
   const toKm = (m) => m / 1000
-  const DISTANCES = [5000, 10000, 15000, 20000, 30000, 50000, 80000, 100000]
+  const DISTANCES = [5000, 10000, 15000, 20000, 30000]
   const DISTANCE_KEYBOARD = _.chain(DISTANCES)
     .map((distance) => ({text: `${toKm(distance)} км`, callback_data: distance.toString()}))
-    .chunk(4)
+    .chunk(3)
     .value()
 
   bot.command('distance', async (ctx) => {

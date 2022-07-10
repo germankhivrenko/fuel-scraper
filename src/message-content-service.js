@@ -16,7 +16,7 @@ class MessageContentService {
     return `Для пошуку та отримання повідомлень Вам потрібно:`
       + `\n/fuels - Обрати бажане паливо`
       + `\n/location - Поділитися локацією`
-      + `\n/distance - Обрати радіус пошуку (50 км за замовчуванням)`
+      + `\n/distance - Обрати радіус пошуку (10 км за замовчуванням)`
       + `\n\nКорисні команди:`
       + `\n/search - Шукати пальне`
       + `\n/settings - Показати налаштування пошуку`
@@ -41,7 +41,7 @@ class MessageContentService {
   }
 
   getNothingFoundContent() {
-    return `За Вашим запитом нічого не знайдено.\n/help - допомога`
+    return `За Вашим запитом нічого не знайдено. /help - допомога`
   }
 
   getSearchSettings(user) {
