@@ -27,7 +27,8 @@ class SocarParser extends Parser {
     const fuels = _.chain(fuelPrices)
       .map((rawFuel) => {
         const fuel = _.find(SocarParser.FUEL_PATTERNS, (fuel, pattern) => {
-          return rawFuel.match(pattern)
+          const fuelName = rawFuel.name || rawFuel
+          return fuelName.match(pattern)
         }) 
 
         return ({fuel, desc: rawFuel})
