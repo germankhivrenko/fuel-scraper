@@ -62,7 +62,7 @@ describe('MessageContentService', function() {
     const expected = 
       `Дизель, Дизель Преміум на OKKO, Test Address Line (2.5 км)`
       + `\n\nTest Station Description`
-      + `\n\nP.S. дані на 16:47:00`
+      + `\n\nP.S. дані на 16:47:00 Сб`
       + `\n/help - допомога`
     assert.equal(actual, expected)
   })

@@ -1,6 +1,8 @@
 const _ = require('lodash')
 const {BRANDS, getBrandName, getFuelName} = require('./const')
 
+const DAY_NAMES = ['Нед', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб']
+
 class MessageContentService {
   getAboutContent() {
     const brandsStr = _.chain(BRANDS).map(getBrandName).sortBy().join(', ').value()
@@ -30,12 +32,12 @@ class MessageContentService {
   getFuelOnStationContent(station, fuels, distance) {
     const fuelsStr = _.chain(fuels).map(getFuelName).join(', ').value()
     const distanceStr = `(${this._formatDistance(distance)})`
+    const dayName = DAY_NAMES[station.fetchedAt.getDay()]
     const timeStr = station.fetchedAt.toLocaleTimeString('en-GB', {timeZone: 'Europe/Helsinki'})
 
     return `${fuelsStr} на ${getBrandName(station.brand)}, ${station.address} ${distanceStr}`
       + `\n\n${station.desc}`
-      + `\n\nP.S. дані на ${timeStr}`
-      + `\n/help - допомога`
+      + `\n\nP.S. дані на ${timeStr} ${dayName}`
   }
 
   getNothingFoundContent() {
