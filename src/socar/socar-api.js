@@ -1,8 +1,9 @@
-const axios = require('axios')
+const {request} = require('undici')
 
 class SocarAPI {
   async getStationList() {
-    const {data: {data}} = await axios('https://socar.ua/api/map/stations')
+    const {body} = await request('https://socar.ua/api/map/stations')
+    const {data} = await body.json()
 
     return data
   }
