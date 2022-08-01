@@ -1,12 +1,11 @@
 const {Factory} = require('../factory')
 const {SocarExtractor} = require('./extractor')
 const {SocarParser} = require('./parser')
-const {SocarAPI} = require('./socar-api')
+const {puppeteer} = require('../puppeteer')
 
 class SocarFactory extends Factory {
   createExtractor() {
-    const socarAPI = new SocarAPI()
-    return new SocarExtractor(socarAPI)
+    return new SocarExtractor(puppeteer)
   }
 
   createParser() {

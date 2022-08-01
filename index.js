@@ -45,10 +45,10 @@ const {MessageContentService} = require('./src/message-content-service')
       const extractor = factory.createExtractor()
       const parser = factory.createParser()
       const wait = {
-        [BRANDS.okko]: 5 * 60 * 1000,
-        [BRANDS.wog]: 5 * 60 * 1000,
-        [BRANDS.upg]: 5 * 60 * 1000,
-        [BRANDS.socar]: 5 * 60 * 1000
+        [BRANDS.okko]: 15 * 60 * 1000,
+        [BRANDS.wog]: 15 * 60 * 1000,
+        [BRANDS.upg]: 15 * 60 * 1000,
+        [BRANDS.socar]: 15 * 60 * 1000
       }[brand]
 
       return Job.create(async () => {

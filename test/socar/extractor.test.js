@@ -3,17 +3,20 @@ const _ = require('lodash')
 const {describe, it} = require('mocha')
 const {SocarExtractor} = require('../../src/socar/extractor')
 
-class SocarAPIMock {
-  getStationList() {
-    return Promise.resolve([{id: 1}, {id: 2}, {id: 3}])
-  }
+const puppeteerMock = {
+  launch: () => ({
+    newPage: () => ({
+      goto: () => ({
+        json: () => Promise.resolve({data: [{id: 1}, {id: 2}, {id: 3}]})
+      }),
+    }),
+    close: _.noop
+  })
 }
 
 describe('SocarExtractor', function() {
-  const socarAPI = new SocarAPIMock()
-
   it('extracts raw stations data as async iteractor', async function() {
-    const socarExtractor = new SocarExtractor(socarAPI)
+    const socarExtractor = new SocarExtractor(puppeteerMock)
     const stationsData = await socarExtractor.extract()
 
     const actual = []
