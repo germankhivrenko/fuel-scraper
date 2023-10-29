@@ -1,4 +1,2 @@
-# TODO:
-- search ux: 1) info about search info before results 2) unified message
-- /help and /about texts, add /help to the end of each search result
-- ui/ux of keyboard markup
+# Fuel Hunter
+This repo is a data scraper for a telegram bot that helps to find fuel around you.
